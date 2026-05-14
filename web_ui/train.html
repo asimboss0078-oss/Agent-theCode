@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agent-theCode Training</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div>
+        <h1>Train the Agent</h1>
+        <form id="train-form">
+            <label>Label:
+                <input name="label" value="main">
+            </label><br>
+            <textarea name="text" rows="7" cols="60" placeholder="Paste text or drag a .txt file"></textarea><br>
+            <input type="file" id="file-input" accept=".txt,.md" />
+            <button type="button" onclick="uploadTrain()">Train</button>
+        </form>
+        <div id="train-result"></div>
+    </div>
+    <script>
+    function uploadTrain() {
+        var form = document.getElementById('train-form');
+        var data = new FormData(form);
+        var file = document.getElementById('file-input').files[0];
+        if (file) data.append('file', file);
+        fetch('/api/train', { method: 'POST', body: data })
+            .then(r => r.json())
+            .then(res => { document.getElementById('train-result').innerText = JSON.stringify(res); });
+    }
+    </script>
+</body>
+</html>
